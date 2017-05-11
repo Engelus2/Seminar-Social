@@ -2,20 +2,47 @@
 Created on 03.05.2017
 
 @author: Alexander
+
+
+
+Kommentare (rechtschreibfehler bitte behalten)
+
+Kurze erklärung
+stopRequestAt anzahl der nutzer die ihr analysieren wollts
+beim starten:
+    mit eingabe 1 bekommts ihr den fortschritt (gebts eine andere Zahl ein so verschwindert er wieder)
+    mit eingabe 9 beendet ichr das Programm (json wird trotzdem erstellt wie weit er halt gekommen ist)
+
+
+Das ist eine Test klasse also definitiv nicht optimal aber erfüllt den zweck
+
+
 '''
 
 import steamapi
+import time
 from steamapi.user import SteamGroup
+import JsonHelper
+from thread import start_new_thread
 
-stopRequestAt = 100 
+'''
+Diesen wert setzten Achtung es entspricht nicht der Wirklichen anzahl da manche user doppelt gezählt werden
+zB bei 50000 kommen etwa 40000 nutzer raus (wie schon gesagt der code ist eher zweckmäßig als logisch)
+'''
+stopRequestAt = 50000
+
+threadcontroll = 0
 currentrequest = 0
 steamapi.core.APIConnection(api_key="153823DBBAD57AE1360496D35A75FDC0", validate_key=True)  # <-- Insert API key here
 startuser = steamapi.user.SteamUser(76561197960279154)
 friends = startuser.friends
 users = [startuser]
 usersByCountry = {}
+userByFriends = {}
 
-
+'''
+setzt den Wert value in die Liste des Dictionary beim Schlüssel key ein
+'''
 def setinDictionary(dict, key, value):
     if key in dict:
         if value not in dict[key]:
@@ -23,19 +50,42 @@ def setinDictionary(dict, key, value):
     else:
         dict[key] = [value]
 
-
-def goThrougFrtiends(friendList):
+'''
+geht ein bisschen verwirrend durch freunde solange bis stopRequesAt angekommen ist
+'''
+def goThrougFriends(user):
     global currentrequest
+    friendList = user.friends
+    id = user.steamid
     currentrequest += len(friendList)
+    global threadcontroll
     for i in friendList:
         if i not in users:
             users.append(i)
-            setinDictionary(usersByCountry, i.country_code, i)
+            setinDictionary(usersByCountry, i.country_code, i.steamid)
+            setinDictionary(userByFriends, id, i.steamid)
+            if threadcontroll == 1:
+                print len(users)
+                print "find ID " ,currentrequest / float(stopRequestAt)
+                print "sort ID: " ,len(users) / float(currentrequest)
             if currentrequest < stopRequestAt and i.privacy == 3:
-                goThrougFrtiends(i.friends)
-  
-goThrougFrtiends(startuser.friends)
-if "DE" in usersByCountry:
-    print "DE"
-    print usersByCountry["DE"]
+                goThrougFriends(i)
+    print "ende"  
+    
+     
+start = time.time() 
+
+try:
+    start_new_thread(goThrougFriends, (startuser, ))
+except:
+    print "vorzeitiges Ende"
+while threadcontroll is not 9:
+    threadcontroll = int(input("Ihre Eingabe? "))
+
+end = time.time()
+# eigentlich nichtssagend  
+print "Time: ", (end - start)
+
 print len(users)
+JsonHelper.printJson(usersByCountry, 'SortCountry.txt')
+JsonHelper.printJson(userByFriends, 'SortFriend.txt')
