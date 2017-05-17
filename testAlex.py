@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 '''
 Created on 03.05.2017
 
@@ -7,7 +9,7 @@ Created on 03.05.2017
 
 Kommentare (rechtschreibfehler bitte behalten)
 
-Kurze erklärung
+Kurze erklaerung
 stopRequestAt anzahl der nutzer die ihr analysieren wollts
 beim starten:
     mit eingabe 1 bekommts ihr den fortschritt (gebts eine andere Zahl ein so verschwindert er wieder)
@@ -27,9 +29,9 @@ from thread import start_new_thread
 
 '''
 Diesen wert setzten Achtung es entspricht nicht der Wirklichen anzahl da manche user doppelt gezählt werden
-zB bei 50000 kommen etwa 40000 nutzer raus (wie schon gesagt der code ist eher zweckmäßig als logisch)
+zB bei 50000 kommen etwa 40000 nutzer raus (wie schon gesagt der code ist eher zweckmaeßig als logisch)
 '''
-stopRequestAt = 50000
+stopRequestAt = 500
 
 threadcontroll = 0
 currentrequest = 0
@@ -41,7 +43,7 @@ usersByCountry = {}
 userByFriends = {}
 
 '''
-setzt den Wert value in die Liste des Dictionary beim Schlüssel key ein
+setzt den Wert value in die Liste des Dictionary beim Schluessel key ein
 '''
 def setinDictionary(dict, key, value):
     if key in dict:
