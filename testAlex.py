@@ -16,7 +16,7 @@ beim starten:
     mit eingabe 9 beendet ichr das Programm (json wird trotzdem erstellt wie weit er halt gekommen ist)
 
 
-Das ist eine Test klasse also definitiv nicht optimal aber erfüllt den zweck
+Das ist eine Test klasse also definitiv nicht optimal aber erfï¿½llt den zweck
 
 
 '''
@@ -25,11 +25,13 @@ import steamapi
 import time
 from steamapi.user import SteamGroup
 import JsonHelper
+import networkx as nx
+import matplotlib.pyplot as plt
 from thread import start_new_thread
 
 '''
-Diesen wert setzten Achtung es entspricht nicht der Wirklichen anzahl da manche user doppelt gezählt werden
-zB bei 50000 kommen etwa 40000 nutzer raus (wie schon gesagt der code ist eher zweckmaeßig als logisch)
+Diesen wert setzten Achtung es entspricht nicht der Wirklichen anzahl da manche user doppelt gezï¿½hlt werden
+zB bei 50000 kommen etwa 40000 nutzer raus (wie schon gesagt der code ist eher zweckmaeï¿½ig als logisch)
 '''
 stopRequestAt = 500
 
@@ -37,10 +39,11 @@ threadcontroll = 0
 currentrequest = 0
 steamapi.core.APIConnection(api_key="153823DBBAD57AE1360496D35A75FDC0", validate_key=True)  # <-- Insert API key here
 startuser = steamapi.user.SteamUser(76561197960279154)
-friends = startuser.friends
 users = [startuser]
 usersByCountry = {}
 userByFriends = {}
+
+G = nx.Graph()
 
 '''
 setzt den Wert value in die Liste des Dictionary beim Schluessel key ein
@@ -74,11 +77,31 @@ def goThrougFriends(user):
                 goThrougFriends(i)
     print "ende"  
     
-     
+def getFriendsConnectionGraph(user):
+    if user.privacy == 3:
+        for i in user.friends:
+            if i.privacy == 3:
+                G.add_edge(user.steamid, i.steamid)
+    else:
+        print "notublic"
+    
+    
+         
+getFriendsConnectionGraph(startuser)
+lenge = len(startuser.friends)
+counter = 0
+for x in startuser.friends:
+    counter +=1
+    print counter/ float (lenge)
+    getFriendsConnectionGraph(x)
+nx.draw(G)
+plt.show()
+'''
 start = time.time() 
 
 try:
-    start_new_thread(goThrougFriends, (startuser, ))
+    start_new_thread(getFriendsConnectionGraph, (startuser, ))
+
 except:
     print "vorzeitiges Ende"
 while threadcontroll is not 9:
@@ -91,3 +114,4 @@ print "Time: ", (end - start)
 print len(users)
 JsonHelper.printJson(usersByCountry, 'SortCountry.txt')
 JsonHelper.printJson(userByFriends, 'SortFriend.txt')
+'''
