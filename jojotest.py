@@ -23,7 +23,7 @@ userByFriends = {}
 userByLevel = {}
 steamapi.core.APIConnection(api_key="3FF94A9C0C8E7833E315736F735CE048", validate_key=True)
 me = steamapi.user.SteamUser(userurl = 'smileybarry')  # For http://steamcommunity.com/id/smileybarrysmileybarry
-stoprequestat = 5
+stoprequestat = 500
 threadcontroll = 0
 
 listToDo.append(me) # ID von smileybarry
@@ -61,11 +61,13 @@ for x in listToDo:
 	if(x.privacy == 3):	
 		setinDictionary(userByLevel, x.level, x.steamid)
 '''
+
+
+try:
+	goThroughFriends()
+except:
+	print("DONE; DONE; DONE")
 end = time.time()
-
-
-goThroughFriends()
-
     
 print(counter)
 print(end-start)
@@ -92,7 +94,6 @@ nx.draw_networkx_labels(G, pos, labels)
 plt.show()
 
 JsonHelper.printJson(usersByCountry, 'SortCountry.txt')
-'''
 JsonHelper.printJson(userByFriends, 'SortFriend.txt')
 JsonHelper.printJson(userByLevel, 'SortLevel.txt')
-'''
+

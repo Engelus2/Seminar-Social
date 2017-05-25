@@ -37,7 +37,7 @@ stopRequestAt = 500
 
 threadcontroll = 0
 currentrequest = 0
-steamapi.core.APIConnection(api_key="153823DBBAD57AE1360496D35A75FDC0", validate_key=True)  # <-- Insert API key here
+steamapi.core.APIConnection(api_key="3FF94A9C0C8E7833E315736F735CE048", validate_key=True)  # <-- Insert API key here
 startuser = steamapi.user.SteamUser(76561197960279154)
 users = [startuser]
 usersByCountry = {}
