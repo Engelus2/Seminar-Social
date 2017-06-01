@@ -23,27 +23,30 @@ def goThroughList(list):
 	if x not in usedPlayers:
 		me = steamapi.user.SteamUser(userid = x)
 		if me.privacy == 3:
-		    if me.country_code is None:
-			setinDictionary(userByCountry, 'null', me.steamid)
-		    else:
-			setinDictionary(userByCountry, me.country_code, me.steamid)
-		    setinDictionary(userByLevel, str(me.level), me.steamid)
-		    if me.is_community_banned is False:
-		    	setinDictionary(userByCommunityBan, 'false', me.steamid)
-		    else:
-		    	setinDictionary(userByCommunityBan, 'true', me.steamid)
-	 	    setinDictionary(userByLastlogoff, str((me.last_logoff-t).total_seconds()), me.steamid)
-	 	    setinDictionary(userByTimecreated, str((me.time_created-t).total_seconds()), me.steamid)
-		    for y in me.games:
-		        setinDictionary(userByGames, y.name, me.steamid)
-		    for y in me.recently_played:
-		        setinDictionary(userByRecentlyplayed, y.name, me.steamid)
-		    for y in me.friends:
-		        setinDictionary(userByFriends, str(me.steamid), y.steamid)
-		    if me.is_vac_banned is False:
-		    	setinDictionary(userByVACBan, 'false', me.steamid)
-		    else:
-		    	setinDictionary(userByVACBan, 'true', me.steamid)
+			try:
+				    if me.country_code is None:
+					setinDictionary(userByCountry, 'null', me.steamid)
+				    else:
+					setinDictionary(userByCountry, me.country_code, me.steamid)
+				    setinDictionary(userByLevel, str(me.level), me.steamid)
+				    if me.is_community_banned is False:
+				    	setinDictionary(userByCommunityBan, 'false', me.steamid)
+				    else:
+				    	setinDictionary(userByCommunityBan, 'true', me.steamid)
+			 	    setinDictionary(userByLastlogoff, str((me.last_logoff-t).total_seconds()), me.steamid)
+			 	    setinDictionary(userByTimecreated, str((me.time_created-t).total_seconds()), me.steamid)
+				    for y in me.games:
+					setinDictionary(userByGames, y.name, me.steamid)
+				    for y in me.recently_played:
+					setinDictionary(userByRecentlyplayed, y.name, me.steamid)
+				    for y in me.friends:
+					setinDictionary(userByFriends, str(me.steamid), y.steamid)
+				    if me.is_vac_banned is False:
+				    	setinDictionary(userByVACBan, 'false', me.steamid)
+				    else:
+				    	setinDictionary(userByVACBan, 'true', me.steamid)
+			except:
+				print('Something went wrong')	
 
 def getRidOfAlreadyDone():
 	for i in userByVACBan:
@@ -83,8 +86,8 @@ try:
     PlayerList = userBySteamID['players']
     getRidOfAlreadyDone()
     goThroughList(PlayerList)
-except:	
-	print('X')
+except Exception, e:	
+	print(e)
 
 JsonHelper.printJson(userByFriends, 'SortFriend50000.txt')
 JsonHelper.printJson(userByLevel, 'SortLevel50000.txt')
