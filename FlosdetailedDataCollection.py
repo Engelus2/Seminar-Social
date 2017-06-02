@@ -21,8 +21,8 @@ def goThroughList(list):
     falsefriends = 0
     for x in list:
 	try:
-		counter = counter +1
-		if pcounter<100 and x not in usedPlayers:
+		
+		if pcounter<7500 and x not in usedPlayers:
 			print("total counter: ", counter)
 			me = steamapi.user.SteamUser(userid = x)
 			if me.privacy == 3:
@@ -53,6 +53,7 @@ def goThroughList(list):
 			else:
 				falsefriends = falsefriends + 1
 				print("False Friends: ", falsefriends)
+		counter = counter +1
 	except:
 		print('Something went wrong')
     print("DONE getting data for now")
