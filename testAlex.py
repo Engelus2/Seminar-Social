@@ -22,12 +22,12 @@ Das ist eine Test klasse also definitiv nicht optimal aber erf�llt den zweck
 '''
 
 import steamapi
-import time
 from steamapi.user import SteamGroup
 import JsonHelper
 import networkx as nx
 import matplotlib.pyplot as plt
 from thread import start_new_thread
+import SaveData
 
 '''
 Diesen wert setzten Achtung es entspricht nicht der Wirklichen anzahl da manche user doppelt gez�hlt werden
@@ -39,7 +39,7 @@ threadcontroll = 0
 currentrequest = 0 
 steamapi.core.APIConnection(api_key="153823DBBAD57AE1360496D35A75FDC0", validate_key=True) 
 #steamapi.core.APIConnection(api_key="3FF94A9C0C8E7833E315736F735CE048", validate_key=True)  # <-- Insert API key here
-startuser = steamapi.user.SteamUser(76561197960279154)
+#startuser = steamapi.user.SteamUser(76561197960279154)
 users = [startuser]
 usersByCountry = {}
 userByFriends = {}
@@ -85,9 +85,26 @@ def getFriendsConnectionGraph(user):
                 G.add_edge(user.steamid, i.steamid)
     else:
         print "notublic"
+
+
+
+
+
+
+# testet die abfrage herausgefunden: es werden teilweise schon noch doppelte abfragen gemacht gerade bei friends(die letzten 2 porint sollten kene abfrage benötigen
+startuser = SaveData.loadIt()
+
+print startuser.name
+print startuser.friends[2].friends
+print startuser.friends
+print startuser.friends[2].friends[0].friends
+JsonHelper.printJson2(startuser, 'test.txt')
+print "ende"
+
+
+
     
-    
-         
+'''       
 getFriendsConnectionGraph(startuser)
 lenge = len(startuser.friends)
 counter = 0
@@ -97,7 +114,7 @@ for x in startuser.friends:
     getFriendsConnectionGraph(x)
 nx.draw(G)
 plt.show()
-'''
+
 start = time.time() 
 
 try:
