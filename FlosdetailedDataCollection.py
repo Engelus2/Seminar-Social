@@ -22,7 +22,7 @@ def goThroughList(list):
     for x in list:
 	try:
 		
-		if pcounter<7500 and x not in usedPlayers:
+		if pcounter<1000 and x not in usedPlayers:
 			print("total counter: ", counter)
 			me = steamapi.user.SteamUser(userid = x)
 			if me.privacy == 3:
