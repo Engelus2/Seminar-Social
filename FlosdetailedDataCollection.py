@@ -19,52 +19,76 @@ def goThroughList(list):
     counter = 0
     pcounter= 0
     falsefriends = 0
+    wrong = 0
     for x in list:
 	try:
 		
-		if pcounter<1000 and x not in usedPlayers:
+		if counter < 50 and x not in usedPlayers2:
+			print("This time: ", pcounter)
 			print("total counter: ", counter)
 			me = steamapi.user.SteamUser(userid = x)
-			if me.privacy == 3:
-				pcounter = pcounter + 1
-				print("This time: ", pcounter)
+			setinDictionary(userByPrivacy, str(me.privacy), me.steamid)
+			if pcounter < 1 and x not in usedPlayers:
 				if me.country_code is None:
 					setinDictionary(userByCountry, 'null', me.steamid)
 				else:
 					setinDictionary(userByCountry, me.country_code, me.steamid)
-				setinDictionary(userByLevel, str(me.level), me.steamid)
-				if me.is_community_banned is False:
-					setinDictionary(userByCommunityBan, 'false', me.steamid)
-				else:
-					setinDictionary(userByCommunityBan, 'true', me.steamid)
-				setinDictionary(userByLastlogoff, str((me.last_logoff-t).total_seconds()), me.steamid)
-				setinDictionary(userByTimecreated, str((me.time_created-t).total_seconds()), me.steamid)
-			   	for y in me.games:
-					setinDictionary(userByGames, y.name, me.steamid)
-				for y in me.recently_played:
-					setinDictionary(userByRecentlyplayed, y.name, me.steamid)
-				for y in me.friends:
-					setinDictionary(userByFriends, str(me.steamid), y.steamid)
-				if me.is_vac_banned is False:
-				 	setinDictionary(userByVACBan, 'false', me.steamid)
-				else:
-					setinDictionary(userByVACBan, 'true', me.steamid)
+				if me.privacy == 3:
+					setinDictionary(userByLevel, str(me.level), me.steamid)
+					if me.is_community_banned is False:
+						setinDictionary(userByCommunityBan, 'false', me.steamid)
+					else:
+						setinDictionary(userByCommunityBan, 'true', me.steamid)
+					setinDictionary(userByLastlogoff, str((me.last_logoff-t).total_seconds()), me.steamid)
+					setinDictionary(userByTimecreated, str((me.time_created-t).total_seconds()), me.steamid)
+				   	for y in me.games:
+						setinDictionary(userByGames, y.name, me.steamid)
+					for y in me.recently_played:
+						setinDictionary(userByRecentlyplayed, y.name, me.steamid)
+					for y in me.friends:
+						setinDictionary(userByFriends, str(me.steamid), y.steamid)
+					if me.is_vac_banned is False:
+					 	setinDictionary(userByVACBan, 'false', me.steamid)
+					else:
+						setinDictionary(userByVACBan, 'true', me.steamid)
+					pcounter = pcounter + 1
 				
-			else:
-				falsefriends = falsefriends + 1
-				print("False Friends: ", falsefriends)
-		counter = counter +1
+				else:
+					falsefriends = falsefriends + 1
+					print("False Friends: ", falsefriends)
+		if pcounter < 1:
+			counter = counter +1
 	except:
-		print('Something went wrong')
+		wrong = wrong +1
+		print("Something went wrong:", wrong)
     print("DONE getting data for now")
-    print("total counter: ", counter)
+    print("counter: ", counter)
     print("This time: ", pcounter)
     print("False Friends: ", falsefriends)
+    print("Something went wrong:", wrong)
 
 def getRidOfAlreadyDone():
-	for i in userByVACBan:
-		for x in userByVACBan[i]:
+	for i in userByCountry:
+		for x in userByCountry[i]:
 			usedPlayers.append(x)
+def getRidOfAlreadyDone2():
+	for i in userByPrivacy:
+		for x in userByPrivacy[i]:
+			usedPlayers2.append(x)
+def splitGames():
+	    i = 0
+	    for x in userByGames:
+		if i%2 is 0:
+			for y in userByGames[x]:
+				setinDictionary(userByGames1, x, y)
+		if i%2 is 1:
+			for y in userByGames[x]:
+				setinDictionary(userByGames2, x, y)
+		print(i, len(userByGames1), len(userByGames2), len(userByGames))
+	    	i = i+1
+	    JsonHelper.printJson(userByGames1, 'SortGames50000.txt')
+	    JsonHelper.printJson(userByGames2, 'SortGames50000_2.txt')
+	
 	
 
 PlayerList = []
@@ -78,7 +102,11 @@ userByGames = {}
 userByLastlogoff = {}
 userByTimecreated = {}
 userByRecentlyplayed = {}
+userByPrivacy = {}
+userByGames1 = {}
+userByGames2 = {}
 usedPlayers = []
+usedPlayers2 =[]
 t = datetime.datetime(1970,1,1)
 
 userBySteamID = JsonHelper.loadJson(userBySteamID, 'PlayerList.txt')
@@ -93,12 +121,15 @@ userByGames = JsonHelper.loadJson(userByGames, 'SortGames50000.txt')
 userByLastlogoff = JsonHelper.loadJson(userByLastlogoff, 'SortLastlogoff50000.txt')
 userByTimecreated = JsonHelper.loadJson(userByTimecreated, 'SortTimecreated50000.txt')
 userByRecentlyplayed = JsonHelper.loadJson(userByRecentlyplayed, 'SortRecentlyplayed50000.txt')
+userByPrivacy = JsonHelper.loadJson(userByPrivacy, 'SortPrivacy50000.txt')
 #'''
 
 try:
     PlayerList = userBySteamID['players']
     getRidOfAlreadyDone()
+    getRidOfAlreadyDone2()
     goThroughList(PlayerList)
+    #splitGames()
 except:	
 	print('ERROR')
 
@@ -109,6 +140,7 @@ JsonHelper.printJson(userByGames, 'SortGames50000.txt')
 JsonHelper.printJson(userByRecentlyplayed, 'SortRecentlyplayed50000.txt')
 JsonHelper.printJson(userByLastlogoff, 'SortLastlogoff50000.txt')
 JsonHelper.printJson(userByTimecreated, 'SortTimecreated50000.txt')
-JsonHelper.printJson(userByCountry, 'SortCountry50000.txt')
 JsonHelper.printJson(userByVACBan, 'SortVACBan50000.txt')
+JsonHelper.printJson(userByCountry, 'SortCountry50000.txt')
+JsonHelper.printJson(userByPrivacy, 'SortPrivacy50000.txt')
 print("DONE")
