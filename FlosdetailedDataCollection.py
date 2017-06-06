@@ -20,15 +20,16 @@ def goThroughList(list):
     pcounter= 0
     falsefriends = 0
     wrong = 0
+    pcountermax = 8000
     for x in list:
 	try:
 		
-		if counter < 51000 and x not in usedPlayers2 and pcounter < 1000:
+		if counter < 51000 and x not in usedPlayers2 and pcounter < pcountermax:
 			print("This time: ", pcounter)
 			print("total counter: ", counter)
 			me = steamapi.user.SteamUser(userid = x)
 			setinDictionary(userByPrivacy, str(me.privacy), me.steamid)
-			if pcounter < 1000 and x not in usedPlayers:
+			if pcounter < pcountermax and x not in usedPlayers:
 				if me.country_code is None:
 					setinDictionary(userByCountry, 'null', me.steamid)
 				else:
@@ -56,7 +57,7 @@ def goThroughList(list):
 				else:
 					falsefriends = falsefriends + 1
 					print("False Friends: ", falsefriends)
-		if pcounter < 1000:
+		if pcounter < pcountermax:
 			counter = counter +1
 	except:
 		wrong = wrong +1
@@ -75,7 +76,7 @@ def getRidOfAlreadyDone2():
 	for i in userByPrivacy:
 		for x in userByPrivacy[i]:
 			usedPlayers2.append(x)
-def splitGames():
+def splitLists():
 	    i = 0
 	    for x in userByGames:
 		if i%2 is 0:
@@ -87,7 +88,19 @@ def splitGames():
 		print(i, len(userByGames1), len(userByGames2), len(userByGames))
 	    	i = i+1
 	    JsonHelper.printJson(userByGames1, 'SortGames50000.txt')
-	    JsonHelper.printJson(userByGames2, 'SortGames50000_2.txt')
+	    JsonHelper.printJson(userByGames2, 'SortGames50000_3.txt')
+	    i = 0
+	    for x in userByFriends:
+		if i%2 is 0:
+			for y in userByFriends[x]:
+				setinDictionary(userByFriends1, x, y)
+		if i%2 is 1:
+			for y in userByFriends[x]:
+				setinDictionary(userByFriends2, x, y)
+		print(i, len(userByFriends1), len(userByFriends2), len(userByFriends))
+	    	i = i+1
+	    JsonHelper.printJson(userByFriends1, 'SortFriend50000.txt')
+	    JsonHelper.printJson(userByFriends2, 'SortFriend50000_2.txt')
 	
 	
 
@@ -105,6 +118,8 @@ userByRecentlyplayed = {}
 userByPrivacy = {}
 userByGames1 = {}
 userByGames2 = {}
+userByFriends1 = {}
+userByFriends2 = {}
 usedPlayers = []
 usedPlayers2 =[]
 t = datetime.datetime(1970,1,1)
@@ -129,7 +144,7 @@ try:
     getRidOfAlreadyDone()
     getRidOfAlreadyDone2()
     goThroughList(PlayerList)
-    #splitGames()
+    #splitLists()
 except:	
 	print('ERROR')
 
