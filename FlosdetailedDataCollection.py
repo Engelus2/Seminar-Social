@@ -20,7 +20,7 @@ def goThroughList(list):
     pcounter= 0
     falsefriends = 0
     wrong = 0
-    pcountermax = 8000
+    pcountermax = 10
     for x in list:
 	try:
 		
