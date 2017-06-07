@@ -23,9 +23,9 @@ class Data(object):
     def addXUsers(self, count):
         while count>0:
             me = steamapi.user.SteamUser(userid=self.dictToDo.keys()[0])
+            print count
             if me.steamid not in self.dictDone:
                 count -=1
-                print me.name
                 self.dictDone[me.steamid] = me 
                 if(me.privacy == 3):
                     self.dictPrivate[me.steamid] = me 
