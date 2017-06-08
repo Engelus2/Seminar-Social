@@ -20,16 +20,18 @@ def goThroughList(list):
     pcounter= 0
     falsefriends = 0
     wrong = 0
-    pcountermax = 10
+    pcountermax = 51000
     for x in list:
 	try:
 		
-		if counter < 51000 and x not in usedPlayers2 and pcounter < pcountermax:
+		if pcounter < pcountermax:
 			print("This time: ", pcounter)
 			print("total counter: ", counter)
-			me = steamapi.user.SteamUser(userid = x)
-			setinDictionary(userByPrivacy, str(me.privacy), me.steamid)
-			if pcounter < pcountermax and x not in usedPlayers:
+			if x not in usedPlayers2:
+				me = steamapi.user.SteamUser(userid = x)
+				setinDictionary(userByPrivacy, str(me.privacy), me.steamid)
+			if x not in usedPlayers:
+				me = steamapi.user.SteamUser(userid = x)
 				if me.country_code is None:
 					setinDictionary(userByCountry, 'null', me.steamid)
 				else:
