@@ -1,0 +1,6 @@
+Analyse zur Anzahl an Freunden:
+	Maximum: 2000 Freunde
+	Durchschnitt: 89.9013130325
+	untersuchte Personen: 42954
+	Gesamtanzahl an Beziehungen: 3861621
+	Geringeste nicht vorhandene Anzahl an Freunden: 425
