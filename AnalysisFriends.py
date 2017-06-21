@@ -1,5 +1,6 @@
 import JsonHelper
 import json
+import math
 
 def setinDictionary(dict, key, value):
     if key in dict:
@@ -26,6 +27,8 @@ maxvalue=0.0
 people=0.0
 meanvalue=0.0
 alladded=0.0
+standard = 0.0
+varianz = 0.0
 for x in userByFriendsall:
 	number = len(userByFriendsall[x])
 	people+=1
@@ -46,14 +49,25 @@ for i in range(1,2000):
 		if i not in NumberOfFriendsStatistik: 
 			hit = True
 			print("geringste nicht vorhandene Anzahl an Freunden: "+str(i))
-JsonHelper.printJson(NumberOfFriends, 'NumberOfFriends.txt')
-JsonHelper.printJson(NumberOfFriendsStatistik, 'NumberOfFriendsStatistik.txt')
+#JsonHelper.printJson(NumberOfFriends, 'NumberOfFriends.txt')
+#JsonHelper.printJson(NumberOfFriendsStatistik, 'NumberOfFriendsStatistik.txt')
+
+for x in NumberOfFriendsStatistik:
+	#standard += abs(((x-meanvalue)*NumberOfFriendsStatistik[x][0]))
+	varianz += abs(((x-meanvalue)*(x-meanvalue)*NumberOfFriendsStatistik[x][0]))
+	#print(x,meanvalue,(x-meanvalue),NumberOfFriendsStatistik[x][0])
+#standard=standard/people
+#print("Standardabweichung: "+str(standard))
+varianz=varianz/people
+print("Varianz: "+str(varianz))
+standard=math.sqrt(varianz)
+print("Standardabweichung: "+str(standard))
+
 '''
 temp = 0.0
 for x in NumberOfFriendsStatistik:
 	temp += NumberOfFriendsStatistik[x][0]
 	print(temp)
-'''
 for i in NumberOfFriends:
 	value = 0.0
 	people = 0.0
@@ -75,3 +89,4 @@ for i in NumberOfFriends:
 	value = value/people
 	setinDictionary(NumberOfFriendsFriends,i,value)
 JsonHelper.printJson(NumberOfFriendsFriends, 'NumberOfFriendsFriends.txt')
+'''
