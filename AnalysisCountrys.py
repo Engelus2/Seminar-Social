@@ -1,5 +1,6 @@
 import JsonHelper
 import json
+import math
 
 def setinDictionary(dict, key, value):
     if key in dict:

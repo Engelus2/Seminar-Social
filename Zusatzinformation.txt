@@ -12,8 +12,8 @@ Analyse nach Ländern:
 	Minimum Personen: 1
 	Maximum Personen: 11047
 	Durchschnitt: 214.170940171
-	Standardabweichung: 
-	Varianz: 
+	Standardabweichung: 14.6345802868
+	Varianz: 214.170940171
 	keine Angabe: 19844
 	untersuchte Personen: 50116
 	gefundene Länder: 233
