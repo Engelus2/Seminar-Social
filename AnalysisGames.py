@@ -16,6 +16,11 @@ userByGames2 = {}
 userByGames3 = {}
 userByGamesall = {}
 GamesByUsers = {}
+GamesByUsers1 = {}
+GamesByUsers2 = {}
+GamesByUsers3 = {}
+GamesByUsers4 = {}
+UserGamesStatistik = {}
 userByFriends = JsonHelper.loadJson(userByFriends, 'SortFriend50000.txt')
 userByFriends2 = JsonHelper.loadJson(userByFriends2, 'SortFriend50000_2.txt')
 userByGames1 = JsonHelper.loadJson(userByGames1, 'SortGames50000.txt')
@@ -29,21 +34,59 @@ for x in userByFriends2:
 	for y in userByFriends2[x]:
 		setinDictionary(userByFriendsall,x,y)
 
+counter = 0
 for x in userByGames1:
-	print("1",x)
+	counter += 1
+	print(1,counter,len(userByGames1))
 	for y in userByGames1[x]:
 		setinDictionary(userByGamesall,x,y)
+counter = 0
 for x in userByGames2:
-	print("2",x)
+	counter += 1
+	print(2,counter,len(userByGames2))
 	for y in userByGames2[x]:
 		setinDictionary(userByGamesall,x,y)
+counter = 0
 for x in userByGames3:
-	print("3",x)
+	counter += 1
+	print(3,counter,len(userByGames3))
 	for y in userByGames3[x]:
 		setinDictionary(userByGamesall,x,y)
-
+counter = 0
 for x in userByGamesall:
-	print(x)
+	counter += 1
+	print(4,counter,len(userByGamesall))
 	for y in userByGamesall[x]:	
 		setinDictionary(GamesByUsers,y,x)
+counter = 0
+for x in GamesByUsers:
+	print(5,counter, len(GamesByUsers))
+	setinDictionary(UserGamesStatistik,x,len(GamesByUsers[x]))
+counter = 0
+for x in GamesByUsers:
+	counter+=1
+	print(6,counter, len(GamesByUsers))
+	if counter%4==0:
+		for y in GamesByUsers[x]:
+			setinDictionary(GamesByUsers1,x,y)
+	if counter%4==1:
+		for y in GamesByUsers[x]:
+			setinDictionary(GamesByUsers2,x,y)
+	if counter%4==2:
+		for y in GamesByUsers[x]:
+			setinDictionary(GamesByUsers3,x,y)
+	if counter%4==3:
+		for y in GamesByUsers[x]:
+			setinDictionary(GamesByUsers4,x,y)
+JsonHelper.printJson(GamesByUsers1, 'UserGames_1.txt')
+print("DONE with writing first splitted list")
+JsonHelper.printJson(GamesByUsers2, 'UserGames_2.txt')
+print("DONE with writing second splitted list")
+JsonHelper.printJson(GamesByUsers3, 'UserGames_3.txt')
+print("DONE with writing third splitted list")
+JsonHelper.printJson(GamesByUsers4, 'UserGames_4.txt')
+print("DONE with writing splitted lists")
+JsonHelper.printJson(UserGamesStatistik, 'UserGamesStatistik.txt')
+print("DONE with writing statistik")
 JsonHelper.printJson(GamesByUsers, 'UserGames.txt')
+print("DONE")
