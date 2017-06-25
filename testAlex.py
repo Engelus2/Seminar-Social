@@ -1,6 +1,5 @@
 import JsonHelper
 import networkx as nx
-import matplotlib.pyplot as plt
 import time
 
 class User():
@@ -88,19 +87,20 @@ def getTroughDictInGraph(dict, G, name):
             try:
                 G.node[int(id)][name] = key
             except:
-                print "need to vrate"
-                G.add_node(int(id))
-                G.node[int(id)][name] = key
                 if key == "DE": 
                     print "de"
+                    print "need to vrate"
+                    G.add_node(int(id))
+                    G.node[int(id)][name] = key
                     
 
                     
 
 def getFriendsConnectionGraph(user, G):
-    if str(user) in onlyAnalyzedFriends:
-        for friend in onlyAnalyzedFriends[str(user)]:
-            G.add_edge(int(user), int(friend))
+    if str(user) in friends:
+        for friend in friends[str(user)]:
+            if int(friend) in G.nodes():
+                G.add_edge(int(user), int(friend))
 
 '''
 for user in friends:
@@ -137,7 +137,7 @@ for node in G.nodes():
     print counter / anz
 
 print time.clock() - start
-nx.write_gml(G, 'graph.gml')
+nx.write_gml(G, 'graphDE.gml')
 print time.clock() - start
 
 '''
