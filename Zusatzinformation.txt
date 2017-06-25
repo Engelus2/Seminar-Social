@@ -18,6 +18,10 @@ Analyse nach Ländern:
 	untersuchte Personen: 50116
 	gefundene Länder: 233
 
+Analyse nach Profilalter:
+	Maximum: 2003-09-10 14:05:08
+	Minimum: 2017-05-21 11:02:18
+	Durchscnitt: 2010-01-03 06:22:15
 TODO: Max, Min, Schnitt, Standardabweichung, Varianz ->  für alle
 Alter der Profile ~ Anzahl der Freunde
 Zeitpunkt letzter Logout ~ Anzahl der Freunde
