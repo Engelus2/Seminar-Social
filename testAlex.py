@@ -87,20 +87,20 @@ def getTroughDictInGraph(dict, G, name):
             try:
                 G.node[int(id)][name] = key
             except:
-                if key == "DE": 
-                    print "de"
-                    print "need to vrate"
-                    G.add_node(int(id))
-                    G.node[int(id)][name] = key
+                print "need to vrate"
+                #G.add_node(int(id))
+                #G.node[int(id)][name] = key
+                #if key == "DE": 
+                    #print "de"
+                    
                     
 
                     
 
 def getFriendsConnectionGraph(user, G):
-    if str(user) in friends:
-        for friend in friends[str(user)]:
-            if int(friend) in G.nodes():
-                G.add_edge(int(user), int(friend))
+    if str(user) in onlyAnalyzedFriends:
+        for friend in onlyAnalyzedFriends[str(user)]:
+            G.add_edge(int(user), int(friend))
 
 '''
 for user in friends:
@@ -118,11 +118,13 @@ G = nx.Graph()
 print "se"
 #G = nx.read_gml("graph.gml")
 #G.add_node(76561197971506367, test='5pm')
+for x in privacy[str(3)]:
+    G.add_node(int(x))
 getTroughDictInGraph(comBan, G, 'comBan')
 getTroughDictInGraph(country, G, 'country')
 getTroughDictInGraph(lastlogOff, G, 'lastlogOff')
 getTroughDictInGraph(level, G, 'level')
-getTroughDictInGraph(privacy, G, 'privacy')
+#getTroughDictInGraph(privacy, G, 'privacy')
 getTroughDictInGraph(recPlayed, G, 'recPlayed')
 getTroughDictInGraph(timeCreated, G, 'timeCreated')
 getTroughDictInGraph(vacBan, G, 'vacBan')
@@ -137,7 +139,7 @@ for node in G.nodes():
     print counter / anz
 
 print time.clock() - start
-nx.write_gml(G, 'graphDE.gml')
+nx.write_gml(G, 'graphTest.gml')
 print time.clock() - start
 
 '''
