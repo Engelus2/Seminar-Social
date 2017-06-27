@@ -57,8 +57,7 @@ timeCreated = JsonHelper.loadJson(timeCreated, '../Data/SortTimecreated50000.txt
 vacBan = JsonHelper.loadJson(vacBan, '../Data/SortVACBan50000.txt')
 numFriends = JsonHelper.loadJson(numFriends, '../Data/NumberOfpersonalFriends.txt')
 onlyAnalyzedFriends = JsonHelper.loadJson(onlyAnalyzedFriends, '../Data/onlyAnalyzedFriends.txt')
-
-#games = JsonHelper.loadJson(games, '../Data/SortGames50000.txt')
+games = JsonHelper.loadJson(games, '../Data/SortGames50000.txt')
 games2 = JsonHelper.loadJson(games2, '../Data/SortGames50000_2.txt')
 games3 = JsonHelper.loadJson(games3, '../Data/SortGames50000_3.txt')
 userGames = JsonHelper.loadJson(userGames, '../Data/UserGames_1.txt')
@@ -80,9 +79,6 @@ for x in userGames3:
 for x in userGames4:
     userGames[x] = userGames4[x]    
 
-
-
-
 def getTroughDictInGraph(dict, G, name):
     for key in dict:
         for id in dict[key]:
@@ -90,10 +86,12 @@ def getTroughDictInGraph(dict, G, name):
                 G.node[int(id)][name] = key
             except:
                 print "need to vrate"
-                #G.add_node(int(id))
-                #G.node[int(id)][name] = key
-                #if key == "DE": 
-                    #print "de"
+                if key == "DE": 
+                    print "de"
+                    G.add_node(int(id))
+                    G.node[int(id)][name] = key
+                    G.node[int(id)]['type'] = "user"
+
                     
                     
 
@@ -103,7 +101,8 @@ def addAttribute(G, node, name, att):
 def getFriendsConnectionGraph(user, G):
     if str(user) in onlyAnalyzedFriends:
         for friend in onlyAnalyzedFriends[str(user)]:
-            G.add_edge(int(user), int(friend))
+            if int(friend) in G.nodes():
+                G.add_edge(int(user), int(friend))
 
 '''
 for user in friends:
@@ -125,10 +124,11 @@ G = nx.read_gml('../GML/graph.gml')
 print "end read"
 
 '''
+'''
 for x in privacy[str(3)]:
     G.add_node(int(x))
     G.node[int(x)]['type'] = "user"
-    
+'''    
 getTroughDictInGraph(comBan, G, 'comBan')
 getTroughDictInGraph(country, G, 'country')
 getTroughDictInGraph(lastlogOff, G, 'lastlogOff')
@@ -139,21 +139,38 @@ getTroughDictInGraph(timeCreated, G, 'timeCreated')
 getTroughDictInGraph(vacBan, G, 'vacBan')
 print "converted"
 
+
+counter = 0.0
+anz = len(G.nodes())
+for node in G.nodes():
+    counter +=1
+    getFriendsConnectionGraph(node, G)
+    print counter / anz
+
+
+
 for x in games:
     print x
-    print x.encode('utf-8', 'ignore').decode('utf-8')
-    G.node[str(x)]['type'] = "game"
+    G.add_node(str(x.encode('ascii', 'ignore')))
+    G.node[str(x.encode('ascii', 'ignore'))]['type'] = "game"
 print len(games)
+
+
 len =  len(userGames)
 print len
 counter = 0.0
-for x in userGames:
-    print counter / len
-    counter +=1
-    for y in userGames[x]:
-        G.add_edge(int(x), y)
-print "ende" + time.clock() - start
-nx.write_gml(G, '../GML/graphGames.gml')
+for x in G.nodes():
+    if G.node[x]['type'] == "user":
+        print counter / len
+        counter +=1
+        print x
+        try:
+            for y in userGames[str(x)]:
+                G.add_edge(int(x), str(y.encode('ascii', 'ignore')))
+        except:
+            print "keine ahhnung"
+print "ende"
+nx.write_gml(G, '../GML/graphTest.gml')
 print time.clock() - start
 
 '''
