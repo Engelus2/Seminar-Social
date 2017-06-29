@@ -1,7 +1,6 @@
 import steamapi
 from steamapi.user import SteamGroup
 import JsonHelper
-import datetime, time
 import json
 
 def setinDictionary(dict, key, value):
@@ -11,11 +10,7 @@ def setinDictionary(dict, key, value):
     else:
         dict[key] = [value]
 
-userByFriends = {}
-userByFriends2 = {}
-userByFriendsall = {}
-#userByFriends = JsonHelper.loadJson(userByFriends, 'SortFriend50000.txt')
-#userByFriends2 = JsonHelper.loadJson(userByFriends2, 'SortFriend50000_2.txt')
+
 GamesByUser1 = {}
 GamesByUser2 = {}
 GamesByUser3 = {}

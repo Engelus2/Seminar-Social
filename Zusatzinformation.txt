@@ -31,5 +31,8 @@ Analyse nach Games:
 
 TODO: Max, Min, Schnitt, Standardabweichung, Varianz ->  für alle
 //Zeitpunkt letzter Logout ~ Anzahl der Freunde
-Anzahl Games ~ Anzahl Freunden
+Anzahl Games ~ Anzahl Freunden -> Gruppierung
 Prozentanteil gemeinsamer Spiele mit Freunden
+Level ~ Freunde
+gebannte Spieler ~ gebannte Freunde
+Land ~ Bans

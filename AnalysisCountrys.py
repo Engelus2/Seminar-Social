@@ -51,13 +51,13 @@ print("Standardabweichung: "+str(standard))
 '''
 JsonHelper.printJson(NumberOfCitizens, 'NumberOfCitizens.txt')
 '''
-'''
+
 FriendsbyCountry = {}
 FriendsbyCountry10p = {}
 PercentageInternational = {}
 PercentageInternational10p = {}
 counter=0
-'''
+
 '''
 DE = 0
 inte = 0
@@ -83,7 +83,7 @@ for a in userByCountry["DE"]:
 print(inte,(inte+DE+nul))
 '''
 
-'''
+
 for x in userByCountry:
 	counter+=1
 	value = 0.0
@@ -120,16 +120,17 @@ for x in userByCountry:
 	if people > 9:
 		setinDictionary(FriendsbyCountry10p,x,value)
 	try:
-		international = international/(international+nulp+innerland)
+		international = international/(international+innerland)
 		setinDictionary(PercentageInternational,x,international)
 	except:
 		international = international
 	if len(userByCountry[x]) > 9:
 		setinDictionary(PercentageInternational10p,x,international)
 
-JsonHelper.printJson(FriendsbyCountry, 'NumberOfFriendsbyCountry.txt')
-JsonHelper.printJson(FriendsbyCountry10p, 'NumberOfFriendsbyCountry10plus.txt')
-JsonHelper.printJson(PercentageInternational, 'PercentageOfInternationalFriends.txt')
-JsonHelper.printJson(PercentageInternational10p, 'PercentageOfInternationalFriends10plus.txt')
-'''
+#JsonHelper.printJson(FriendsbyCountry, 'NumberOfFriendsbyCountry.txt')
+#JsonHelper.printJson(FriendsbyCountry10p, 'NumberOfFriendsbyCountry10plus.txt')
+#JsonHelper.printJson(PercentageInternational, 'PercentageOfInternationalFriends.txt')
+#JsonHelper.printJson(PercentageInternational10p, 'PercentageOfInternationalFriends10plus.txt')
+JsonHelper.printJson(PercentageInternational, 'PercentageOfInternationalFriends_nonull.txt')
+JsonHelper.printJson(PercentageInternational10p, 'PercentageOfInternationalFriends10plus_nonull.txt')
 
