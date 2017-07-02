@@ -33,4 +33,3 @@ TODO: Max, Min, Schnitt, Standardabweichung, Varianz ->  für alle
 //Zeitpunkt letzter Logout ~ Anzahl der Freunde
 Prozentanteil gemeinsamer Spiele mit Freunden
 gebannte Spieler ~ gebannte Freunde
-Land ~ Bans
