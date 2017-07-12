@@ -2,6 +2,29 @@ import JsonHelper
 import networkx as nx
 import time
 
+# This is a function to merge several nodes into one in a Networkx graph
+
+def merge_nodes(G,nodes, new_node, attr_dict=None, **attr):
+    """
+    Merges the selected `nodes` of the graph G into one `new_node`,
+    meaning that all the edges that pointed to or from one of these
+    `nodes` will point to or from the `new_node`.
+    attr_dict and **attr are defined as in `G.add_node`.
+    """
+    
+    G.add_node(new_node, attr_dict, **attr) # Add the 'merged' node
+    
+    for n1,n2,data in G.edges(data=True):
+        # For all edges related to one of the nodes to merge,
+        # make an edge going to or coming from the `new gene`.
+        if n1 in nodes:
+            G.add_edge(new_node,n2,data)
+        elif n2 in nodes:
+            G.add_edge(n1,new_node,data)
+    
+    for n in nodes: # remove the merged nodes
+        G.remove_node(n)
+
 class User():
     
     def __init__(self, id, comBan, country, lastlogOff, level, privacy, recPlayed, timeCreated, vacBan, numFriends, friends):
@@ -86,11 +109,11 @@ def getTroughDictInGraph(dict, G, name):
                 G.node[int(id)][name] = key
             except:
                 print "need to vrate"
-                if key == "DE": 
-                    print "de"
-                    G.add_node(int(id))
-                    G.node[int(id)][name] = key
-                    G.node[int(id)]['type'] = "user"
+                #if key == "DE": 
+                    #print "de"
+                G.add_node(int(id))
+                G.node[int(id)][name] = key
+                G.node[int(id)]['type'] = "user"
 
                     
                     
@@ -101,8 +124,8 @@ def addAttribute(G, node, name, att):
 def getFriendsConnectionGraph(user, G):
     if str(user) in onlyAnalyzedFriends:
         for friend in onlyAnalyzedFriends[str(user)]:
-            if int(friend) in G.nodes():
-                G.add_edge(int(user), int(friend))
+            #if int(friend) in G.nodes():
+            G.add_edge(int(user), int(friend))
 
 '''
 for user in friends:
@@ -147,12 +170,17 @@ for node in G.nodes():
     getFriendsConnectionGraph(node, G)
     print counter / anz
 
+gamesList = ["Sid Meier's Civilization III: Complete", "Sid Meier's Civilization IV", "Sid Meier's Civilization V", "Sid Meier's Civilization VI", 
+             "DayZ", "Half-Life","Half-Life 2", "Super Meat Boy", "Keep Talking and Nobody Explodes", "Anno 2070", "Anno 1404", "Rocket League", 
+             "The Sims(TM) 3", "The Witcher 3: Wild Hunt", "Dota 2", "Team Fortress 2", "Path of Exile", "Counter-Strike: Source", "Portal", 
+             "The Elder Scrolls V: Skyrim", "Terraria", "Borderlands 2"]
 
 
 for x in games:
-    print x
-    G.add_node(str(x.encode('ascii', 'ignore')))
-    G.node[str(x.encode('ascii', 'ignore'))]['type'] = "game"
+    if x in gamesList:
+        print x
+        G.add_node(str(x.encode('ascii', 'ignore')))
+        G.node[str(x.encode('ascii', 'ignore'))]['type'] = "game"
 print len(games)
 
 
@@ -160,15 +188,15 @@ len =  len(userGames)
 print len
 counter = 0.0
 for x in G.nodes():
-    if G.node[x]['type'] == "user":
+    if G.node[x]['type'] == "game":
         print counter / len
         counter +=1
         print x
-        try:
-            for y in userGames[str(x)]:
-                G.add_edge(int(x), str(y.encode('ascii', 'ignore')))
-        except:
-            print "keine ahhnung"
+        for y in games[str(x)]:
+            G.add_edge(x, y)
+
+#TODO vllt nach land mergen mit gewichteten Graphen könnte knoten und so veringern
+
 print "ende"
 nx.write_gml(G, '../GML/graphTest.gml')
 print time.clock() - start
