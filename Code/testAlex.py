@@ -65,7 +65,7 @@ userGames = {}
 userGames2 = {}
 userGames3 = {}
 userGames4 = {}
-
+userAge = {}
 
 # Jsons die bereits eingelesen wurden
 friends = JsonHelper.loadJson(friends, '../Data/SortFriend50000.txt')
@@ -87,6 +87,7 @@ userGames = JsonHelper.loadJson(userGames, '../Data/UserGames_1.txt')
 userGames2 = JsonHelper.loadJson(userGames2, '../Data/UserGames_2.txt')
 userGames3 = JsonHelper.loadJson(userGames3, '../Data/UserGames_3.txt')
 userGames4 = JsonHelper.loadJson(userGames4, '../Data/UserGames_4.txt')
+userAge = JsonHelper.loadJson(userGames4, '../Data/UserYearCreated.txt')
 for x in friends2:
     friends[x] = friends2[x]
     
@@ -160,6 +161,7 @@ getTroughDictInGraph(level, G, 'level')
 getTroughDictInGraph(recPlayed, G, 'recPlayed')
 getTroughDictInGraph(timeCreated, G, 'timeCreated')
 getTroughDictInGraph(vacBan, G, 'vacBan')
+getTroughDictInGraph(userAge, G, 'yearCreated')
 print "converted"
 
 
@@ -170,6 +172,7 @@ for node in G.nodes():
     getFriendsConnectionGraph(node, G)
     print counter / anz
 
+'''
 gamesList = ["Sid Meier's Civilization III: Complete", "Sid Meier's Civilization IV", "Sid Meier's Civilization V", "Sid Meier's Civilization VI", 
              "DayZ", "Half-Life","Half-Life 2", "Super Meat Boy", "Keep Talking and Nobody Explodes", "Anno 2070", "Anno 1404", "Rocket League", 
              "The Sims(TM) 3", "The Witcher 3: Wild Hunt", "Dota 2", "Team Fortress 2", "Path of Exile", "Counter-Strike: Source", "Portal", 
@@ -194,11 +197,11 @@ for x in G.nodes():
         print x
         for y in games[str(x)]:
             G.add_edge(x, y)
-
-#TODO vllt nach land mergen mit gewichteten Graphen könnte knoten und so veringern
+'''
+#TODO vllt nach land mergen mit gewichteten Graphen koennte knoten und so veringern
 
 print "ende"
-nx.write_gml(G, '../GML/graphTest.gml')
+nx.write_gml(G, '../GML/graph40WithAge.gml')
 print time.clock() - start
 
 '''
