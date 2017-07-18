@@ -128,16 +128,19 @@ def getFriendsConnectionGraph(user, G):
             #if int(friend) in G.nodes():
             G.add_edge(int(user), int(friend))
 
-'''
+
 for user in friends:
     list = []
     for friend in friends[str(user)]:
+        if str(friend) == "76561197960426285":
+            print "find"
+            print str(friend) in friends
+            print friends["76561197960426285"]
         if str(friend) in friends:
             list.append(friend)
-            print "fsa"
     onlyAnalyzedFriends[user] = list
 JsonHelper.printJson(onlyAnalyzedFriends, 'onlyAnalyzedFriends.txt')
-'''
+
 print "start Graph"
 start = time.clock()
 G = nx.Graph()
@@ -201,7 +204,7 @@ for x in G.nodes():
 #TODO vllt nach land mergen mit gewichteten Graphen koennte knoten und so veringern
 
 print "ende"
-nx.write_gml(G, '../GML/graph40WithAge.gml')
+nx.write_gml(G, '../GML/graph40Test.gml')
 print time.clock() - start
 
 '''
